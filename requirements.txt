@@ -1,0 +1,41 @@
+# ASD Detection Clinical AI System
+# Python 3.13 | Tested on Windows 11 + Hugging Face Spaces (Ubuntu 24)
+# Run: pip install -r requirements.txt
+
+# Core ML
+torch==2.11.0
+torchvision==0.26.0
+
+# Streamlit app
+streamlit==1.56.0
+
+# Medical imaging
+nibabel>=5.4.0
+
+# Image processing
+opencv-python-headless>=4.13.0   # headless for Linux/HF Spaces
+scikit-image>=0.26.0
+Pillow>=12.0.0
+
+# Explainability
+grad-cam>=1.5.5
+lime>=0.2.0.1
+
+# LLM narrative
+anthropic>=0.94.0
+
+# PDF report
+reportlab>=4.4.0
+
+# Data science
+numpy>=2.0.0
+pandas>=3.0.0
+scipy>=1.17.0
+scikit-learn>=1.8.0
+matplotlib>=3.10.0
+
+# Config files
+PyYAML>=6.0
+
+# Note: For local development on Windows, replace opencv-python-headless
+# with opencv-python (the headless version lacks GUI support on Windows)

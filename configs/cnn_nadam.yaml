@@ -1,0 +1,56 @@
+# configs/cnn_nadam.yaml
+# Best-performing configuration for the graduate clinical AI system.
+# Trained on quality-filtered ABIDE-I data (clean_train.csv).
+# Results: AUC 0.994 · Sensitivity 95.6% · Specificity 97.2% · Brier 0.027
+
+experiment:
+  name: "cnn_nadam_clean_full"
+  description: "5-layer CNN with NAdam on quality-filtered ABIDE-I full dataset"
+  phase: "graduate_2026"
+
+model:
+  architecture: "cnn"          # 'cnn' | 'skip_cnn'
+  num_classes: 2
+  dropout: 0.2
+
+training:
+  optimizer: "nadam"           # 'adam' | 'nadam' | 'rmsprop'
+  learning_rate: 0.001
+  betas: [0.9, 0.999]
+  eps: 1.0e-8
+  epochs: 50
+  batch_size: 64
+  early_stopping:
+    patience: 5
+    min_delta: 0.001
+
+data:
+  train_csv: "/kaggle/working/clean_train.csv"
+  val_csv:   "/kaggle/working/clean_val.csv"
+  test_csv:  "/kaggle/working/clean_test.csv"
+  path_prefix: "/kaggle/input/autism/"
+  mode: "cnn"
+  num_workers: 2
+
+normalisation:
+  mean: [0.1290, 0.1290, 0.1290]    # ABIDE-I training set statistics
+  std:  [0.1741, 0.1741, 0.1741]
+
+output:
+  weights_path: "xai_cnn_best_weights.pth"
+  log_history: true
+
+results:
+  test_accuracy: 0.9644
+  test_auc: 0.9944
+  test_auprc: 0.9943
+  sensitivity: 0.9559
+  specificity: 0.9725
+  precision: 0.9705
+  f1: 0.9631
+  brier: 0.0270
+  dataset_subjects: 1067
+  train_slices: 67625
+  val_slices: 7507
+  test_slices: 18814
+  notes: "Quality-filtered data. Significant improvement over B.Tech baseline (AUC 0.97)."

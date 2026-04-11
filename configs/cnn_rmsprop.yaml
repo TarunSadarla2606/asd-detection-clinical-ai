@@ -1,0 +1,41 @@
+# configs/cnn_rmsprop.yaml
+# Plain CNN with RMSprop — B.Tech baseline
+
+experiment:
+  name: "cnn_rmsprop_full"
+  description: "5-layer CNN with RMSprop on full ABIDE-I (B.Tech baseline)"
+  phase: "btech_2023"
+
+model:
+  architecture: "cnn"
+  num_classes: 2
+  dropout: 0.2
+
+training:
+  optimizer: "rmsprop"
+  learning_rate: 0.001
+  eps: 1.0e-7
+  epochs: 50
+  batch_size: 64
+  early_stopping:
+    patience: 5
+    min_delta: 0.001
+
+data:
+  train_csv: "/kaggle/input/autism-csv/extracted_random_labels_train.csv"
+  val_csv:   "/kaggle/input/autism-csv/extracted_random_labels_validation.csv"
+  test_csv:  "/kaggle/input/autism-csv/extracted_random_labels_test.csv"
+  path_prefix: "/kaggle/input/autism/"
+  mode: "cnn"
+
+results:
+  train_accuracy: 0.94
+  test_accuracy: 0.91
+  test_auc: 0.97
+  precision: 0.90
+  recall: 0.90
+  specificity: 0.91
+  f1: 0.90
+  dataset_subjects: 1067
+  train_slices: 72367
+  test_slices: 20102

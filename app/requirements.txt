@@ -1,0 +1,16 @@
+streamlit==1.56.0
+nibabel
+opencv-python-headless
+scikit-image
+matplotlib
+grad-cam
+lime
+reportlab
+pillow
+scipy
+scikit-learn
+anthropic
+torch==2.11.0
+torchvision
+pandas
+numpy

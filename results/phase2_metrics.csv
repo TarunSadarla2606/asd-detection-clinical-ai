@@ -1,0 +1,9 @@
+Metric,Value,Clinical relevance
+AUC,0.9944,Near-perfect discrimination between ASD and TC at the slice level
+Sensitivity (ASD detection rate),0.9559,Model detects 95.6% of ASD slices — high for a screening tool
+Specificity (TC correct rejection),0.9725,97.2% of TC slices correctly cleared — low false alarm burden
+False Negative Rate (missed ASD),0.0441,4.4% of ASD slices missed — these are the clinically costly errors
+False Positive Rate (false alarms),0.0275,2.8% unnecessary follow-up rate
+Positive Predictive Value,0.9705,Precision/PPV relevant for resource allocation and follow-up decisions
+Brier Score,0.0270,Brier < 0.10 indicates well-calibrated probabilities
+Total test slices evaluated,"18,814",Note: slice-level ≠ subject-level; aggregation needed for clinical use

@@ -1,0 +1,3 @@
+Group,N_slices,N_subjects,ASD_slices,TC_slices,Accuracy,Sensitivity,Specificity,AUC
+Male,16415,911,8226,8189,0.9659,0.9583,0.9735,0.995
+Female,2399,156,931,1468,0.9541,0.9345,0.9666,0.9891

@@ -1,0 +1,54 @@
+# configs/skip_cnn_nadam.yaml
+# Skip-connected CNN with NAdam — best B.Tech baseline configuration.
+# Trained on raw (unfiltered) ABIDE-I data.
+# Results: AUC 0.98 · Test Accuracy 91% (B.Tech 2023 baseline)
+
+experiment:
+  name: "skip_cnn_nadam_full"
+  description: "Skip-connected CNN with NAdam on full ABIDE-I (B.Tech baseline)"
+  phase: "btech_2023"
+
+model:
+  architecture: "skip_cnn"
+  num_classes: 2
+  dropout: 0.2
+
+training:
+  optimizer: "nadam"
+  learning_rate: 0.001
+  betas: [0.9, 0.999]
+  eps: 1.0e-8
+  epochs: 50
+  batch_size: 64
+  early_stopping:
+    patience: 5
+    min_delta: 0.001
+
+data:
+  train_csv: "/kaggle/input/autism-csv/extracted_random_labels_train.csv"
+  val_csv:   "/kaggle/input/autism-csv/extracted_random_labels_validation.csv"
+  test_csv:  "/kaggle/input/autism-csv/extracted_random_labels_test.csv"
+  path_prefix: "/kaggle/input/autism/"
+  mode: "cnn"
+  num_workers: 2
+
+normalisation:
+  mean: [0.485, 0.456, 0.406]    # ImageNet statistics (used in B.Tech)
+  std:  [0.229, 0.224, 0.225]
+
+output:
+  weights_path: "skip_cnn_nadam_weights.pth"
+  log_history: true
+
+results:
+  train_accuracy: 0.93
+  test_accuracy: 0.91
+  test_auc: 0.98
+  precision: 0.93
+  recall: 0.88
+  specificity: 0.94
+  f1: 0.90
+  dataset_subjects: 1067
+  train_slices: 72367
+  test_slices: 20102
+  notes: "B.Tech baseline. No quality filtering applied."

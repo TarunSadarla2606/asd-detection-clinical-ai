@@ -1,0 +1,66 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.egg-info/
+dist/
+build/
+*.egg
+.eggs/
+
+# Environments
+.env
+.venv
+venv/
+env/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+
+# Data (never commit — download from ABIDE-I)
+data/*.csv
+data/*.nii
+data/*.nii.gz
+data/png/
+
+# Model weights (hosted on HF Hub / HF Spaces)
+app/weights/*.pth
+weights/*.pth
+*.pth
+*.pt
+
+# Demo subjects (too large for GitHub — use Git LFS or HF Spaces)
+app/demo_subjects/*.nii
+app/demo_subjects/*.nii.gz
+demo_subjects/*.nii
+demo_subjects/*.nii.gz
+
+# Temp / OS
+.DS_Store
+Thumbs.db
+*.tmp
+*.temp
+
+# Secrets
+.env
+*.key
+*_secret*
+
+# Streamlit
+.streamlit/secrets.toml
+
+# Results (generated — commit only curated figures and CSVs)
+results/figures/phase2/gradcam_raw/
+results/figures/phase2/lime_raw/
+
+# Large output files
+*.zip
+*.tar.gz
