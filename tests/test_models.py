@@ -17,7 +17,7 @@ BATCH = 2
 
 
 # ---------------------------------------------------------------------------
-# Phase 1 models
+# Phase 1 models  (3-channel, 224×224)
 # ---------------------------------------------------------------------------
 
 def test_asd_cnn_output_shape():
@@ -40,12 +40,12 @@ def test_vit_pytorch_output_shape():
 
 
 # ---------------------------------------------------------------------------
-# Phase 2 models
+# Phase 2 models  (3-channel greyscale-to-RGB, 224×224)
 # ---------------------------------------------------------------------------
 
 def test_asd_classifier_cnn_output_shape():
     m = ASDClassifierCNN(num_classes=2).eval()
-    assert m(torch.randn(BATCH, 1, 224, 224)).shape == (BATCH, 2)
+    assert m(torch.randn(BATCH, 3, 224, 224)).shape == (BATCH, 2)
 
 
 def test_asd_classifier_cnn_attributes():
@@ -65,7 +65,7 @@ def test_asd_classifier_cnn_attributes():
 
 def test_hybrid_cnn_vit_output_shape():
     m = HybridCNNViT(num_classes=2).eval()
-    assert m(torch.randn(BATCH, 1, 224, 224)).shape == (BATCH, 2)
+    assert m(torch.randn(BATCH, 3, 224, 224)).shape == (BATCH, 2)
 
 
 def test_hybrid_cnn_vit_attributes():
@@ -81,16 +81,17 @@ def test_hybrid_cnn_vit_attributes():
 
 
 def test_hybrid_get_cls_attn_shape():
-    """get_cls_attn() must return (B, heads, 196) after a forward pass."""
+    """get_cls_attn() returns head-averaged (B, 196) after a forward pass."""
     m = HybridCNNViT(num_classes=2).eval()
-    _ = m(torch.randn(1, 1, 224, 224))
+    _ = m(torch.randn(1, 3, 224, 224))
     attn = m.get_cls_attn()
     assert attn is not None, "get_cls_attn() returned None after forward pass"
-    assert attn.shape[2] == 196, f"Expected 196 spatial tokens, got {attn.shape[2]}"
+    assert attn.shape == (1, 196), \
+        f"Expected (1, 196), got {attn.shape}"
 
 
 def test_hybrid_get_cls_attn_before_forward():
-    """get_cls_attn() must return None before any forward pass."""
+    """get_cls_attn() returns None before any forward pass."""
     m = HybridCNNViT(num_classes=2)
     assert m.get_cls_attn() is None
 
@@ -101,12 +102,12 @@ def test_hybrid_get_cls_attn_before_forward():
 
 def test_build_model_all_names():
     configs = [
-        ("asd_cnn",    {},                                           (3, 224, 224)),
-        ("asd_skipcnn",{},                                           (3, 224, 224)),
-        ("vit",        {"img_size": 64, "patch_size": 8,
-                        "embed_dim": 64, "depth": 2, "num_heads": 2}, (3, 64,  64)),
-        ("cnn",        {},                                           (1, 224, 224)),
-        ("hybrid",     {},                                           (1, 224, 224)),
+        ("asd_cnn",     {},                                            (3, 224, 224)),
+        ("asd_skipcnn", {},                                            (3, 224, 224)),
+        ("vit",         {"img_size": 64, "patch_size": 8,
+                         "embed_dim": 64, "depth": 2, "num_heads": 2}, (3, 64,  64)),
+        ("cnn",         {},                                            (3, 224, 224)),
+        ("hybrid",      {},                                            (3, 224, 224)),
     ]
     for name, kw, shape in configs:
         m = build_model(name, **kw).eval()
