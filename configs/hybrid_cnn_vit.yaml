@@ -1,0 +1,65 @@
+# Hybrid CNN-ViT training configuration (Phase 2 Graduate)
+# Dataset: ABIDE-I — 67,379 quality-filtered 2D axial sMRI slices
+# Trained on Colab A100; weights hosted on HF Spaces
+
+model:
+  name: hybrid_cnn_vit
+  cnn_out: 128          # CNNBackbone output channels
+  feat_size: 14         # spatial grid size (224 / 2^4)
+  embed_dim: 256
+  n_heads: 8
+  n_layers: 4
+  ff_dim: 512
+  dropout: 0.1
+
+data:
+  dataset: ABIDE-I
+  n_subjects: 1067
+  n_sites: 17
+  n_slices_after_qc: 67379
+  input_size: [3, 224, 224]   # greyscale replicated to 3 channels
+  mean: [0.1425056904554367,  0.1425056904554367,  0.1425056904554367]
+  std:  [0.19151894748210907, 0.19151894748210907, 0.19151894748210907]
+  train_split: 0.70
+  val_split:   0.15
+  test_split:  0.15
+  random_seed: 42
+
+training:
+  phase1:
+    description: "Freeze CNNBackbone — train Transformer + head only"
+    epochs: 15
+    lr: 1.0e-4
+    optimizer: AdamW
+    weight_decay: 1.0e-4
+    warmup_epochs: 3
+
+  phase2:
+    description: "Joint fine-tune with differential learning rates"
+    epochs: 25
+    lr_backbone:    1.0e-5
+    lr_transformer: 5.0e-5
+    lr_head:        1.0e-4
+    optimizer: AdamW
+    weight_decay: 1.0e-4
+    warmup_epochs: 2
+
+  batch_size: 32
+  scheduler: CosineAnnealingLR
+  gradient_clip: 1.0
+  mixed_precision: true
+  early_stopping_patience: 8
+  checkpoint_metric: val_auc
+
+hardware:
+  device: cuda
+  accelerator: A100
+  seed: 42
+
+results:
+  test_auc:         0.997
+  test_sensitivity: 0.961
+  test_specificity: 0.977
+  test_accuracy:    0.969
+  test_f1:          0.967
+  weights_url: https://huggingface.co/spaces/TarunSadarla2606/asd-detection-demo/tree/main/weights

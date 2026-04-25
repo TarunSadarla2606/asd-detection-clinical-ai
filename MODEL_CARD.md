@@ -18,9 +18,24 @@
 | Input | 2D axial sMRI slices, 224×224, 3-channel (grayscale replicated) |
 | Output | Binary: ASD (1) vs Typical Control (0) |
 | Trainable parameters | 1,648,270 |
-| Framework | PyTorch 2.11 |
+| Framework | PyTorch 2.6.0 |
 | XAI methods | Grad-CAM (gradient-based) + LIME (perturbation-based) |
 | Uncertainty | MC-Dropout (30 stochastic passes, Dropout2d) |
+| Weights | Hosted on Hugging Face Spaces (Git LFS) |
+
+### HybridCNNViT (Research Model)
+
+| Field | Value |
+|---|---|
+| Architecture | CNNBackbone (conv1–conv4) + 4-block Transformer (8 heads, embed_dim=256) |
+| Optimiser | AdamW, two-phase training |
+| Training epochs | 60 |
+| Input | 2D axial sMRI slices, 224×224, 3-channel |
+| Output | Binary: ASD (1) vs Typical Control (0) |
+| Trainable parameters | ~4,200,000 |
+| Framework | PyTorch 2.6.0 |
+| XAI methods | Attention Rollout (CLS→token, head-averaged) + GradCAM on backbone |
+| AUC-ROC | 0.997 (vs CNN: 0.994) |
 | Weights | Hosted on Hugging Face Spaces (Git LFS) |
 
 ---
