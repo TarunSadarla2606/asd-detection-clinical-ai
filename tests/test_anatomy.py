@@ -1,7 +1,7 @@
 """Tests for app/anatomy.py label_region.
 
 Note: peak_x / peak_y are normalised [0,1], not pixel coordinates.
-energy = fraction of heatmap pixels > 0.5.
+energy = fraction of heatmap pixels > 0.5, rounded to 4 decimal places.
 """
 import sys
 import os
@@ -72,8 +72,13 @@ def test_energy_zero_for_flat_05():
     assert r["energy"] == 0.0
 
 
-def test_energy_positive_for_hot_pixel():
-    r = label_region(100, _hot(50, 75))
+def test_energy_positive_for_hot_region():
+    # A single pixel gives energy = 1/50176 ≈ 0.00002 which rounds to 0.0 at 4 dp.
+    # Need at least 5 pixels above 0.5 for round(energy, 4) >= 0.0001.
+    # Use a 5x5 block (energy = 25/50176 ≈ 0.0005) to produce a detectable value.
+    arr = np.zeros((224, 224), dtype=np.float32)
+    arr[48:53, 73:78] = 1.0
+    r = label_region(100, arr)
     assert r["energy"] > 0.0
 
 
