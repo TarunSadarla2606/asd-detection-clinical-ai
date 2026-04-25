@@ -1,0 +1,6 @@
+model,dataset,split,auc,sensitivity,specificity,accuracy,f1,params_M,notes
+ASDClassifierCNN,ABIDE-I,test (slice-level),0.994,0.956,0.972,0.964,0.963,1.6,Phase 2 CNN — 67K quality-filtered slices; NAdam lr=1e-3
+HybridCNNViT,ABIDE-I,test (slice-level),0.997,0.961,0.977,0.969,0.967,8.4,Phase 2 Hybrid — two-phase training; sinusoidal pos emb; brain token masking
+ASD_CNN (NAdam),ABIDE-I subset,test (slice-level),0.970,0.900,0.910,0.910,0.900,0.8,Phase 1 B.Tech CNN baseline (2023)
+ASD_SkipCNN (NAdam),ABIDE-I subset,test (slice-level),0.980,0.880,0.940,0.910,0.900,0.9,Phase 1 B.Tech skip-CNN baseline (2023)
+ViT_PyTorch (scratch),ABIDE-I subset,test (slice-level),0.620,0.612,0.615,0.613,0.617,8.7,Phase 1 ViT — failed to converge from scratch; dataset too small for ViT
